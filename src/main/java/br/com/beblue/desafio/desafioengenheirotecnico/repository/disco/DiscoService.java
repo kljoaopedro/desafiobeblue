@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 @Service
 public class DiscoService extends PrePersist<Disco> {
@@ -24,6 +27,16 @@ public class DiscoService extends PrePersist<Disco> {
     public Disco searchById(final String id) {
         return repository.findById(id).get();
     }
+
+    public void buildDisco(List<Disco> discos) {
+        if (null != discos && !discos.isEmpty()) {
+            discos.forEach(disco -> {
+                disco.setValor(generateRandomValue());
+                calcularCashBackDisco(disco);
+            });
+        }
+    }
+
 
     public void calcularCashBackDisco(final Disco disco) {
         if (null != disco) {
@@ -135,5 +148,9 @@ public class DiscoService extends PrePersist<Disco> {
             }
         }
         return null;
+    }
+
+    private BigDecimal generateRandomValue() {
+        return new BigDecimal(randomNumeric(3));
     }
 }

@@ -21,6 +21,8 @@ public class Disco extends AbsctractEntity {
     @Id
     private String id;
 
+    private String nome;
+
     /**
      * Genero do repository.
      */
@@ -38,6 +40,9 @@ public class Disco extends AbsctractEntity {
      */
     private BigDecimal cashBack;
 
+    /**
+     * Porcentagem do cashBack
+     */
     private BigDecimal porcentagemCashBack;
 
     public Disco() {
@@ -52,6 +57,14 @@ public class Disco extends AbsctractEntity {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public GeneroEnum getGenero() {

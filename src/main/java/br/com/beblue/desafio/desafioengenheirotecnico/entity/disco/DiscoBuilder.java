@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public final class DiscoBuilder {
 
     private String id;
+    private String nome;
     private GeneroEnum genero;
     private BigDecimal valor;
     private BigDecimal cashBack;
@@ -19,6 +20,11 @@ public final class DiscoBuilder {
 
     public DiscoBuilder withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public DiscoBuilder withNome(String nome) {
+        this.nome = nome;
         return this;
     }
 
@@ -45,6 +51,7 @@ public final class DiscoBuilder {
     public Disco build() {
         Disco disco = new Disco();
         disco.setId(id);
+        disco.setNome(nome);
         disco.setGenero(genero);
         disco.setValor(valor);
         disco.setCashBack(cashBack);

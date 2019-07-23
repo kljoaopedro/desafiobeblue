@@ -1,6 +1,6 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.endpoint.venda;
 
-import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Catalogo;
+import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.VendaMv;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.Venda;
 import br.com.beblue.desafio.desafioengenheirotecnico.repository.venda.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,9 @@ public class VendaEndpoint {
     @PostMapping(value = "/",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Venda> novaVenda(@RequestBody final Catalogo catalogo) throws Exception {
+    public ResponseEntity<Venda> novaVenda(@RequestBody final VendaMv vendaMv) throws Exception {
         try {
-            Venda venda = service.novaVenda(catalogo);
+            Venda venda = service.novaVenda(vendaMv);
             return ResponseEntity.ok().body(venda);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
