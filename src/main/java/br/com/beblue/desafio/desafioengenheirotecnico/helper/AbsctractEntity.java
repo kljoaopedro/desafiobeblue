@@ -3,6 +3,9 @@ package br.com.beblue.desafio.desafioengenheirotecnico.helper;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
+/**
+ * Classe que toda entidade deve herdar.
+ */
 @MappedSuperclass
 public abstract class AbsctractEntity implements Serializable {
 

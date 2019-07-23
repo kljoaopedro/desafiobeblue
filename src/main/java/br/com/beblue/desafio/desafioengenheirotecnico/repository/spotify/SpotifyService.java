@@ -21,10 +21,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("ALL")
+/**
+ * Serviço responsavel pelas operações envolvendo a API do Spotify.
+ */
 @Service
 public class SpotifyService {
 
+    //Client ID e Secret da API do Spotify adquirida ao registrar o projeto.
     private static final String clientId = "50e6ecc7978e4031b33ee387fd9a16e6";
     private static final String clientSecret = "fe726b7a7d3644459dafbb251dd0ece0";
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
@@ -33,22 +36,31 @@ public class SpotifyService {
             .build();
     private static final ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials()
             .build();
-    /**
-     * Booleanos responsaveis por garantir apenas
-     * Uma carga no banco de dados quando a API estiver no ar.
-     */
-    static boolean rockLoaded = false;
+    public static boolean needInit = true;
     static boolean popLoaded = false;
     static boolean mpbLoaded = false;
     static boolean classicLoaded = false;
+    //Atributos garantem apenas uma carga no banco enquanto o serviço estiver no ar.
+    static boolean rockLoaded = false;
+    //Injeção do serviço de disco.
     @Autowired
     DiscoService discoService;
 
+    /**
+     * Metodo ponte para iniciar a carga no banco com os discos vindo do spotify.
+     */
     public void init() {
-        clientCredentials_Sync();
+        if (needInit) {
+            needInit = false;
+            clientCredentials_Sync();
+        }
     }
 
-    public void clientCredentials_Sync() {
+    /**
+     * Metodo responsavel pela comunicaçao com a biblioteca do spotify
+     * Ja gerando o acessToken necessário para fazer as consultas.
+     */
+    private void clientCredentials_Sync() {
         try {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
 
@@ -62,6 +74,13 @@ public class SpotifyService {
         }
     }
 
+    /**
+     * Ponto para fazer as consultas pelos discos e armazenar no banco de dado.
+     *
+     * @param accessToken acessToken gerado pelo método que o chamou.
+     * @throws IOException            exception
+     * @throws SpotifyWebApiException exception
+     */
     private void bridgeAcessToken(String accessToken) throws IOException, SpotifyWebApiException {
         if (Strings.isNullOrEmpty(accessToken)) {
             this.clientCredentials_Sync();
@@ -75,10 +94,17 @@ public class SpotifyService {
         searchClassic(request);
     }
 
+    /**
+     * Faz as busca pelos discos do genêro de Rock.
+     *
+     * @param request Objeto do spotify com os dados necessários para o request.
+     * @throws IOException            Exception.
+     * @throws SpotifyWebApiException Exception.
+     */
     public void searchRock(final SpotifyApi request) throws IOException, SpotifyWebApiException {
         Assert.notNull(request, "Não existe acessToken");
         if (!rockLoaded) {
-            SearchArtistsRequest build = request.searchArtists("Rock").q("Metal").limit(50).build();
+            SearchArtistsRequest build = request.searchArtists("Beatles").limit(50).build();
             Artist[] artistas = build.execute().getItems();
 
             SearchAlbumsRequest search = request.searchAlbums(artistas[0].getName()).limit(50).build();
@@ -101,10 +127,17 @@ public class SpotifyService {
 
     }
 
+    /**
+     * Faz as busca pelos discos do genêro de Pop.
+     *
+     * @param request Objeto do spotify com os dados necessários para o request.
+     * @throws IOException            Exception.
+     * @throws SpotifyWebApiException Exception.
+     */
     public void searchPop(final SpotifyApi request) throws IOException, SpotifyWebApiException {
         Assert.notNull(request, "Não existe acessToken");
         if (!popLoaded) {
-            SearchArtistsRequest build = request.searchArtists("Pop").limit(50).build();
+            SearchArtistsRequest build = request.searchArtists("Michael Jackson").limit(50).build();
             Artist[] artistas = build.execute().getItems();
 
             SearchAlbumsRequest search = request.searchAlbums(artistas[0].getName()).limit(50).build();
@@ -127,6 +160,13 @@ public class SpotifyService {
 
     }
 
+    /**
+     * Faz as busca pelos discos do genêro de MPB.
+     *
+     * @param request Objeto do spotify com os dados necessários para o request.
+     * @throws IOException            Exception.
+     * @throws SpotifyWebApiException Exception.
+     */
     public void searchMpb(final SpotifyApi request) throws IOException, SpotifyWebApiException {
         Assert.notNull(request, "Não existe acessToken");
         if (!mpbLoaded) {
@@ -153,6 +193,13 @@ public class SpotifyService {
 
     }
 
+    /**
+     * Faz as busca pelos discos do genêro Clássico.
+     *
+     * @param request Objeto do spotify com os dados necessários para o request.
+     * @throws IOException            Exception.
+     * @throws SpotifyWebApiException Exception.
+     */
     public void searchClassic(final SpotifyApi request) throws IOException, SpotifyWebApiException {
         Assert.notNull(request, "Não existe acessToken");
         if (!classicLoaded) {

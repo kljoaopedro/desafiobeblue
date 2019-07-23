@@ -2,6 +2,9 @@ package br.com.beblue.desafio.desafioengenheirotecnico.entity.disco;
 
 import java.math.BigDecimal;
 
+/**
+ * Builder que facilita a construção de objetos.
+ */
 public final class DiscoBuilder {
 
     private String id;
@@ -54,7 +57,7 @@ public final class DiscoBuilder {
         disco.setNome(nome);
         disco.setGenero(genero);
         disco.setValor(valor);
-        disco.setCashBack(cashBack);
+        disco.setValorCashBack(cashBack);
         disco.setPorcentagemCashBack(porcentagemCashBack);
         return disco;
     }

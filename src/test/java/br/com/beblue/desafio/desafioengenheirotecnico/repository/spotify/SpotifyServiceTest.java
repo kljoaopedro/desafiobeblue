@@ -38,7 +38,7 @@ public class SpotifyServiceTest {
 
     @Test
     public void acess() {
-        spotifyService.clientCredentials_Sync();
+        spotifyService.init();
     }
 
 }

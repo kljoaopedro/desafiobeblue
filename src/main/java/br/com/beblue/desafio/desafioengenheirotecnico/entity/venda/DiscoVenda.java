@@ -7,14 +7,23 @@ import com.google.common.base.Objects;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Classe responsavel pela relação entre Disco e Venda.
+ */
 @Entity
 public class DiscoVenda extends AbstractVenda implements Serializable {
 
 
+    /**
+     * Identificador(PK).
+     */
     @Id
     @Column(name = "DISCO_VENDA_ID")
     private String id;
 
+    /**
+     * Disco.
+     */
     @ManyToOne(targetEntity = Disco.class, fetch = FetchType.LAZY)
     @JoinColumn(name = Disco.DISCO_ID_COLNAME)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

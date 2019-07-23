@@ -1,4 +1,6 @@
-package br.com.beblue.desafio.desafioengenheirotecnico.entity.disco;
+package br.com.beblue.desafio.desafioengenheirotecnico.entity.venda;
+
+import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 
 public final class VendaMvBuilder {
     private Integer quantidade;

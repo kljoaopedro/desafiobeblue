@@ -5,6 +5,9 @@ import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 import br.com.beblue.desafio.desafioengenheirotecnico.helper.PrePersist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,6 +31,10 @@ public class DiscoService extends PrePersist<Disco> {
         return repository.findById(id).get();
     }
 
+    public List<Disco> searchAll() {
+        return repository.findAll();
+    }
+
     public void buildDisco(List<Disco> discos) {
         if (null != discos && !discos.isEmpty()) {
             discos.forEach(disco -> {
@@ -38,12 +45,13 @@ public class DiscoService extends PrePersist<Disco> {
     }
 
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = Throwable.class)
     public void calcularCashBackDisco(final Disco disco) {
         if (null != disco) {
             BigDecimal percent = calcularPorcentagem(new Date().getDay(), disco.getGenero());
             BigDecimal valorCashBack = disco.getValor().multiply(percent);
             disco.setPorcentagemCashBack(percent);
-            disco.setCashBack(valorCashBack);
+            disco.setValorCashBack(valorCashBack);
 
             prePersist(disco);
             repository.save(disco);

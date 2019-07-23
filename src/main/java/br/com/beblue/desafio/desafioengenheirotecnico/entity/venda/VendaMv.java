@@ -1,13 +1,24 @@
-package br.com.beblue.desafio.desafioengenheirotecnico.entity.disco;
+package br.com.beblue.desafio.desafioengenheirotecnico.entity.venda;
+
+import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 
 import java.io.Serializable;
 
 
+/**
+ * Pojo que faz a comunicção com a API.
+ */
 public class VendaMv implements Serializable {
 
 
+    /**
+     * Quantidade de discos.
+     */
     private Integer quantidade;
 
+    /**
+     * Genero do Disco.
+     */
     private GeneroEnum generoEnum;
 
     public VendaMv() {
