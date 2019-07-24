@@ -1,5 +1,14 @@
  # Desafio técnico - Engenheiro back-end Beblue
  
+ ###Como buildar:
+ Navegar até a pasta raiz do projeto, exemplo: C:\dev\porvabeblue\desafio-engenheiro-tecnico>
+ 
+ 
+ **Executar o comando abaixo**
+ 
+ **mvn clean package && java -jar target/desafio-engenheiro-tecnico-0.0.1-SNAPSHOT.jar**
+ 
+ 
  ###Como utilizar as API's:
 
 Pasta com as requisições: **desafio-engenheiro-tecnico\src\main\resources\requisicoes**
