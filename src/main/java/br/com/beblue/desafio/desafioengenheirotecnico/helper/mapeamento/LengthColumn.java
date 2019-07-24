@@ -1,4 +1,4 @@
-package br.com.beblue.desafio.desafioengenheirotecnico.helper;
+package br.com.beblue.desafio.desafioengenheirotecnico.helper.mapeamento;
 
 /**
  * Classe que ajuda no mapeamento dos atributos da entidade.

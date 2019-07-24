@@ -6,21 +6,23 @@ import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.DiscoVenda;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.DiscoVendaBuilder;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.Venda;
 import br.com.beblue.desafio.desafioengenheirotecnico.exception.LoadDataException;
-import br.com.beblue.desafio.desafioengenheirotecnico.helper.PrePersist;
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.persistencia.PrePersist;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda.PageVenda;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda.PageVendaBuilder;
 import br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda.VendaMv;
 import br.com.beblue.desafio.desafioengenheirotecnico.repository.disco.DiscoService;
 import br.com.beblue.desafio.desafioengenheirotecnico.repository.spotify.SpotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class VendaService extends PrePersist<Venda> {
@@ -30,9 +32,6 @@ public class VendaService extends PrePersist<Venda> {
 
     @Autowired
     DiscoService discoService;
-
-    @Autowired
-    SpotifyService spotifyService;
 
     @Autowired
     public VendaService(VendaRepository repository, DiscoService discoService) {
@@ -45,6 +44,46 @@ public class VendaService extends PrePersist<Venda> {
             throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
         }
         return repository.findById(id).get();
+    }
+
+    public PageVenda searchAllPage(final Date dataInicial, final Date dataFinal, final Integer resultados) throws Exception, LoadDataException {
+        if (SpotifyService.needInit) {
+            throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
+        }
+        if (null == resultados || resultados <= 0) {
+            throw new Exception("Resultado por página deve ser maior que 0!");
+        }
+        PageRequest pageRequest = PageRequest.of(0, resultados);
+        Page<Venda> vendaPage = repository.findAll(pageRequest);
+        List<Venda> listAux = new ArrayList<>(vendaPage.getContent());
+
+        //paginas remanecentes
+        while (vendaPage.hasNext()) {
+            Page<Venda> nextPage = repository.findAll(vendaPage.nextPageable());
+            listAux.addAll(nextPage.getContent());
+
+            // Atualiza a pagina
+            vendaPage = nextPage;
+        }
+        List<Venda> vendas = filterData(listAux, dataInicial, dataFinal);
+        Collections.sort(vendas, new Comparator<Venda>() {
+            @Override
+            public int compare(Venda venda1, Venda venda2) {
+                return venda2.getDataVenda().compareTo(venda1.getDataVenda());
+            }
+        });
+        return PageVendaBuilder
+                .newInstance()
+                .withVendas(vendas)
+                .withTotalElements(vendas.size())
+                .withTotalPages(vendas.size() / resultados <= 0 ? 1 : vendas.size() / resultados)
+                .build();
+    }
+
+    private List<Venda> filterData(List<Venda> listAux, Date dataInicial, Date dataFinal) {
+        return listAux.stream().filter(
+                x -> (x != null && (x.getDataVenda().after(dataInicial) && x.getDataVenda().before(dataFinal)))
+        ).collect(Collectors.toList());
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = Throwable.class)
@@ -85,7 +124,7 @@ public class VendaService extends PrePersist<Venda> {
         return vendaAux;
     }
 
-    private List<Disco> searchDiscos(final GeneroEnum genero) {
+    private List<Disco> searchDiscos(final GeneroEnum genero) throws LoadDataException {
         return discoService.searchAll(genero);
     }
 

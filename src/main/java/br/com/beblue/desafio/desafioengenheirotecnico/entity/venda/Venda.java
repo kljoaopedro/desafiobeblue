@@ -1,6 +1,6 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.entity.venda;
 
-import br.com.beblue.desafio.desafioengenheirotecnico.helper.AbsctractEntity;
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.mapeamento.AbsctractEntity;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;

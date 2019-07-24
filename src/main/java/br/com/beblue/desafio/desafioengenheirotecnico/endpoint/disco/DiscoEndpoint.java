@@ -2,6 +2,7 @@ package br.com.beblue.desafio.desafioengenheirotecnico.endpoint.disco;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
+import br.com.beblue.desafio.desafioengenheirotecnico.exception.LoadDataException;
 import br.com.beblue.desafio.desafioengenheirotecnico.pojo.disco.PageDisco;
 import br.com.beblue.desafio.desafioengenheirotecnico.repository.disco.DiscoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class DiscoEndpoint {
      * @return Disco.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> searchById(@PathVariable("id") String id) {
+    public ResponseEntity<?> searchById(@PathVariable("id") String id) throws LoadDataException {
         Disco disco = service.searchById(id);
         return ResponseEntity.ok().body(disco);
     }
@@ -34,7 +35,7 @@ public class DiscoEndpoint {
     @GetMapping("/")
     public ResponseEntity<?> searchAll(
             @RequestParam(value = "resultado", required = false, defaultValue = "25") Integer resultados,
-            @RequestParam(value = "genero", required = false, defaultValue = "") GeneroEnum generoEnum) throws Exception {
+            @RequestParam(value = "genero", required = false, defaultValue = "") GeneroEnum generoEnum) throws Exception, LoadDataException {
         try {
             PageDisco discos = service.searchAllPage(generoEnum, resultados);
             return ResponseEntity.ok().body(discos);

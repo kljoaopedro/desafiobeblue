@@ -2,9 +2,11 @@ package br.com.beblue.desafio.desafioengenheirotecnico.repository.disco;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
-import br.com.beblue.desafio.desafioengenheirotecnico.helper.PrePersist;
+import br.com.beblue.desafio.desafioengenheirotecnico.exception.LoadDataException;
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.persistencia.PrePersist;
 import br.com.beblue.desafio.desafioengenheirotecnico.pojo.disco.PageDisco;
 import br.com.beblue.desafio.desafioengenheirotecnico.pojo.disco.PageDiscoBuilder;
+import br.com.beblue.desafio.desafioengenheirotecnico.repository.spotify.SpotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,11 +36,17 @@ public class DiscoService extends PrePersist<Disco> {
      * @param id Identificador do disco.
      * @return Disco.
      */
-    public Disco searchById(final String id) {
+    public Disco searchById(final String id) throws LoadDataException {
+        if (SpotifyService.needInit) {
+            throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
+        }
         return repository.findById(id).get();
     }
 
-    public List<Disco> searchAll(final GeneroEnum genero) {
+    public List<Disco> searchAll(final GeneroEnum genero) throws LoadDataException {
+        if (SpotifyService.needInit) {
+            throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
+        }
         List<Disco> all = repository.findAll();
 
         List<Disco> discos = filterGenero(genero, all);
@@ -47,7 +55,10 @@ public class DiscoService extends PrePersist<Disco> {
     }
 
 
-    public PageDisco searchAllPage(final GeneroEnum generoEnum, Integer resultados) throws Exception {
+    public PageDisco searchAllPage(final GeneroEnum generoEnum, Integer resultados) throws Exception, LoadDataException {
+        if (SpotifyService.needInit) {
+            throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
+        }
         if (null == resultados || resultados <= 0) {
             throw new Exception("Resultado por página deve ser maior que 0!");
         }
@@ -70,7 +81,7 @@ public class DiscoService extends PrePersist<Disco> {
                 newInstance()
                 .withDiscos(discos)
                 .withTotalElements(discos.size())
-                .withTotalPages(discos.size() / resultados)
+                .withTotalPages(discos.size() / resultados <= 0 ? 1 : discos.size() / resultados)
                 .build();
     }
 

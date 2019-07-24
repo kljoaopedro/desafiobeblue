@@ -1,4 +1,4 @@
-package br.com.beblue.desafio.desafioengenheirotecnico.helper;
+package br.com.beblue.desafio.desafioengenheirotecnico.helper.mapeamento;
 
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;

@@ -1,5 +1,7 @@
-package br.com.beblue.desafio.desafioengenheirotecnico.helper;
+package br.com.beblue.desafio.desafioengenheirotecnico.helper.persistencia;
 
+
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.mapeamento.AbsctractEntity;
 
 import java.util.UUID;
 

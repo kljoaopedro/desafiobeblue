@@ -1,7 +1,7 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.entity.disco;
 
-import br.com.beblue.desafio.desafioengenheirotecnico.helper.AbsctractEntity;
-import br.com.beblue.desafio.desafioengenheirotecnico.helper.LengthColumn;
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.mapeamento.AbsctractEntity;
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.mapeamento.LengthColumn;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
