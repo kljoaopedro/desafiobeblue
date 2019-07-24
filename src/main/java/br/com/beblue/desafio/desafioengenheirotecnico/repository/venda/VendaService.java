@@ -177,8 +177,8 @@ public class VendaService extends PrePersist<Venda> {
      * @return Lista com a relação.
      */
     private List<DiscoVenda> buildDiscoVenda(List<Disco> discos, Venda vendaAux) {
-
         List<DiscoVenda> discoVendas = new ArrayList<>();
+
         for (Disco disco : discos) {
             discoVendas.add(
                     DiscoVendaBuilder.newInstance().withId(UUID.randomUUID().toString()).withDisco(disco).withVenda(vendaAux).build()

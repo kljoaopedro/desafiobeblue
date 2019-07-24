@@ -1,0 +1,260 @@
+{
+  "front-version": "2.19.2",
+  "version": 3,
+  "nodes": [
+    {
+      "type": "Service",
+      "id": "1df5f610-8309-4074-b715-11d1269e9375",
+      "lastModified": "2019-07-24T16:53:18.876-03:00",
+      "name": "Discos"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+        "name": "GET"
+      },
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/disco/4b8777d3-b6bc-473f-bfc3-93aa9ffdc54b"
+      },
+      "id": "b56308ae-68ce-4118-9aac-871c1ad86d73",
+      "lastModified": "2019-07-24T16:53:18.876-03:00",
+      "name": "Search Disco By ID",
+      "metaInfo": {},
+      "parentId": "1df5f610-8309-4074-b715-11d1269e9375"
+    },
+    {
+      "uriEditor": true,
+      "type": "Request",
+      "method": {
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+        "name": "GET"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\"discos\":[{\"id\":3,\"genero\":\"ROCK\",\"valor\":100,\"cashBack\":null,\"porcentagemCashBack\":null},{\"id\":2,\"genero\":\"ROCK\",\"valor\":200,\"cashBack\":null,\"porcentagemCashBack\":null},{\"id\":3,\"genero\":\"ROCK\",\"valor\":300,\"cashBack\":null,\"porcentagemCashBack\":null}]}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": [
+            {
+              "enabled": true,
+              "name": "resultado",
+              "value": "25"
+            },
+            {
+              "enabled": true,
+              "name": "genero",
+              "value": "CLASSIC"
+            }
+          ]
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/disco/"
+      },
+      "id": "3843490e-7bc9-402f-a6db-1cb76b88946f",
+      "lastModified": "2019-07-24T12:56:23.696-03:00",
+      "name": "Search Disco Paginado",
+      "headers": [],
+      "metaInfo": {},
+      "parentId": "1df5f610-8309-4074-b715-11d1269e9375"
+    },
+    {
+      "type": "Service",
+      "id": "a97e92cf-cd0f-4f99-8c12-bb258ae9b804",
+      "lastModified": "2019-07-24T16:54:42.280-03:00",
+      "name": "Vendas"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\"quantidade\":15,\"generoEnum\":\"ROCK\"}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": [
+            {
+              "name": "id",
+              "value": ""
+            }
+          ]
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/vendas/"
+      },
+      "id": "8f09e14d-8306-473c-9f2b-4818dd06dab2",
+      "lastModified": "2019-07-24T16:54:30.111-03:00",
+      "name": "Nova Venda",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "a97e92cf-cd0f-4f99-8c12-bb258ae9b804"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+        "name": "GET"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\"discos\":[{\"genero\":\"ROCK\",\"valor\":100,\"cashBack\":null,\"porcentagemCashBack\":null},{\"genero\":\"ROCK\",\"valor\":200,\"cashBack\":null,\"porcentagemCashBack\":null},{\"genero\":\"ROCK\",\"valor\":300,\"cashBack\":null,\"porcentagemCashBack\":null}]}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": [
+            {
+              "name": "id",
+              "value": ""
+            }
+          ]
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/vendas/0b5e0b29-5b68-462e-9760-a06429795f88"
+      },
+      "id": "f34c9f66-f84d-44d0-971b-614da564ea7f",
+      "lastModified": "2019-07-24T16:54:42.281-03:00",
+      "name": "Search Venda By ID",
+      "headers": [],
+      "metaInfo": {},
+      "parentId": "a97e92cf-cd0f-4f99-8c12-bb258ae9b804"
+    },
+    {
+      "uriEditor": true,
+      "type": "Request",
+      "method": {
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+        "name": "GET"
+      },
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": [
+            {
+              "enabled": true,
+              "name": "resultado",
+              "value": "25"
+            },
+            {
+              "enabled": true,
+              "name": "data-inicial",
+              "value": "2019-07-23"
+            },
+            {
+              "enabled": true,
+              "name": "data-final",
+              "value": "2019-07-25"
+            }
+          ]
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/vendas/"
+      },
+      "id": "0e23d177-8a8b-40b8-a5c3-c2c0bc7aac4a",
+      "lastModified": "2019-07-24T12:55:04.312-03:00",
+      "name": "Search Venda Paginada",
+      "metaInfo": {},
+      "parentId": "a97e92cf-cd0f-4f99-8c12-bb258ae9b804"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+        "name": "GET"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\"quantidade\":3,\"generoEnum\":\"ROCK\"}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": [
+            {
+              "name": "id",
+              "value": ""
+            }
+          ]
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/spotify/init"
+      },
+      "id": "b275734f-40b4-43b4-96aa-c2c26704c277",
+      "lastModified": "2019-07-24T12:53:54.891-03:00",
+      "name": "INIT",
+      "headers": [],
+      "metaInfo": {}
+    }
+  ]
+}

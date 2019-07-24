@@ -2,7 +2,13 @@
  
  ###Como utilizar as API's:
 
-O projeto contém a pasta com todas as requisições, basta usar da maneira que quiser.
+Pasta com as requisições: **desafio-engenheiro-tecnico\src\main\resources\requisicoes**
+
+Recomendado utilizar o RestClient e importa o Json
+
+
+
+chrome-extension://aejoelaoggembcahagimdiliamlcdmfm/restlet_client.html
 
 ####Primeiramente deve-se usar a API de init
 

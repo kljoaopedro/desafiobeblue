@@ -1,17 +1,19 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.repository.disco;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
-import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.DiscoBuilder;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
-import br.com.beblue.desafio.desafioengenheirotecnico.helper.testes.MessageValidation;
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.testes.TesteHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class DiscoServiceTest extends MessageValidation {
+public class DiscoServiceTest extends TesteHelper {
 
     DiscoService service = new DiscoService();
 
@@ -114,30 +116,31 @@ public class DiscoServiceTest extends MessageValidation {
     }
 
     @Test
-    public void filterGenero() {
-        List<Disco> toFilter = buildList();
+    public void filterGenero() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        List<Disco> toFilter = buildListDisco();
+        Method method = service.getClass().getDeclaredMethod("filterGenero", GeneroEnum.class, List.class);
+        method.setAccessible(true);
 
-        List<Disco> rock = service.filterGenero(GeneroEnum.ROCK, toFilter);
-        List<Disco> classic = service.filterGenero(GeneroEnum.CLASSIC, toFilter);
-        List<Disco> mpb = service.filterGenero(GeneroEnum.MPB, toFilter);
-        List<Disco> pop = service.filterGenero(GeneroEnum.POP, toFilter);
+        Object rock = method.invoke(service, GeneroEnum.ROCK, toFilter);
+        Object pop = method.invoke(service, GeneroEnum.POP, toFilter);
+        Object mpb = method.invoke(service, GeneroEnum.MPB, toFilter);
+        Object classic = method.invoke(service, GeneroEnum.CLASSIC, toFilter);
+
+        List<Object> rockList = new ArrayList<>();
+        List<Object> popList = new ArrayList<>();
+        List<Object> mpbList = new ArrayList<>();
+        List<Object> classicList = new ArrayList<>();
+
+        rockList.addAll((Collection<?>) rock);
+        popList.addAll((Collection<?>) pop);
+        mpbList.addAll((Collection<?>) mpb);
+        classicList.addAll((Collection<?>) classic);
+
+        Assert.assertEquals(4, rockList.size());
+        Assert.assertEquals(3, popList.size());
+        Assert.assertEquals(2, mpbList.size());
+        Assert.assertEquals(3, classicList.size());
     }
 
-    private List<Disco> buildList() {
-        return Arrays.asList(
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.CLASSIC).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.CLASSIC).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.CLASSIC).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.MPB).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.MPB).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.POP).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.POP).build(),
-                DiscoBuilder.newInstance().withGenero(GeneroEnum.POP).build()
-        );
-    }
 
 }
