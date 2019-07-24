@@ -1,8 +1,8 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.endpoint.venda;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.Venda;
-import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.VendaMv;
 import br.com.beblue.desafio.desafioengenheirotecnico.exception.LoadDataException;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda.VendaMv;
 import br.com.beblue.desafio.desafioengenheirotecnico.repository.venda.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

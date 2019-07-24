@@ -3,15 +3,22 @@ package br.com.beblue.desafio.desafioengenheirotecnico.repository.disco;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 import br.com.beblue.desafio.desafioengenheirotecnico.helper.PrePersist;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.disco.PageDisco;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.disco.PageDiscoBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
@@ -31,8 +38,50 @@ public class DiscoService extends PrePersist<Disco> {
         return repository.findById(id).get();
     }
 
-    public List<Disco> searchAll() {
-        return repository.findAll();
+    public List<Disco> searchAll(final GeneroEnum genero) {
+        List<Disco> all = repository.findAll();
+
+        List<Disco> discos = filterGenero(genero, all);
+        discos.sort(Comparator.comparing(Disco::getNome));
+        return discos;
+    }
+
+
+    public PageDisco searchAllPage(final GeneroEnum generoEnum, Integer resultados) throws Exception {
+        if (null == resultados || resultados <= 0) {
+            throw new Exception("Resultado por página deve ser maior que 0!");
+        }
+        PageRequest pageRequest = PageRequest.of(0, resultados);
+        Page<Disco> discoPage = repository.findAll(pageRequest);
+        List<Disco> listAux = new ArrayList<>(discoPage.getContent());
+
+        //paginas remanecentes
+        while (discoPage.hasNext()) {
+            Page<Disco> nextPage = repository.findAll(discoPage.nextPageable());
+            listAux.addAll(nextPage.getContent());
+
+            // Atualiza a pagina
+            discoPage = nextPage;
+        }
+        List<Disco> discos = filterGenero(generoEnum, listAux);
+        discos.sort(Comparator.comparing(Disco::getNome));
+
+        return PageDiscoBuilder.
+                newInstance()
+                .withDiscos(discos)
+                .withTotalElements(discos.size())
+                .withTotalPages(discos.size() / resultados)
+                .build();
+    }
+
+    private List<Disco> filterGenero(GeneroEnum genero, List<Disco> all) {
+        if (null != all && !all.isEmpty()) {
+            if (null != genero) {
+                return all.stream().filter(x -> (null != x.getGenero() && x.getGenero().equals(genero))).collect(Collectors.toList());
+            }
+            return all;
+        }
+        return null;
     }
 
     public void buildDisco(List<Disco> discos) {

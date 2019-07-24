@@ -1,4 +1,4 @@
-package br.com.beblue.desafio.desafioengenheirotecnico.entity.venda;
+package br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 

@@ -1,7 +1,7 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.entity.disco;
 
-import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.VendaMv;
-import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.VendaMvBuilder;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda.VendaMv;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda.VendaMvBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;

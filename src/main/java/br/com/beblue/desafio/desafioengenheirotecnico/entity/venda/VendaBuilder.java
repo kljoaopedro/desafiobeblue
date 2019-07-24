@@ -1,6 +1,7 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.entity.venda;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public final class VendaBuilder {
@@ -9,6 +10,7 @@ public final class VendaBuilder {
     private BigDecimal valorTotal;
     private BigDecimal totalCashBack;
     private Integer totalItens;
+    private Date dataVenda;
 
     private VendaBuilder() {
     }
@@ -42,6 +44,11 @@ public final class VendaBuilder {
         return this;
     }
 
+    public VendaBuilder withDataVenda(Date dataVenda) {
+        this.dataVenda = dataVenda;
+        return this;
+    }
+
     public Venda build() {
         Venda venda = new Venda();
         venda.setId(id);
@@ -49,6 +56,7 @@ public final class VendaBuilder {
         venda.setValorTotal(valorTotal);
         venda.setTotalCashBack(totalCashBack);
         venda.setTotalItens(totalItens);
+        venda.setDataVenda(dataVenda);
         return venda;
     }
 }

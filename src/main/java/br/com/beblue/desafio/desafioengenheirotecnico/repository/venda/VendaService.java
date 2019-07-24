@@ -5,9 +5,9 @@ import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.DiscoVenda;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.DiscoVendaBuilder;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.Venda;
-import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.VendaMv;
 import br.com.beblue.desafio.desafioengenheirotecnico.exception.LoadDataException;
 import br.com.beblue.desafio.desafioengenheirotecnico.helper.PrePersist;
+import br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda.VendaMv;
 import br.com.beblue.desafio.desafioengenheirotecnico.repository.disco.DiscoService;
 import br.com.beblue.desafio.desafioengenheirotecnico.repository.spotify.SpotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import java.util.UUID;
 
 @Service
 public class VendaService extends PrePersist<Venda> {
@@ -75,6 +74,7 @@ public class VendaService extends PrePersist<Venda> {
             totalCashBack = totalCashBack.add(disco.getValorCashBack());
         }
         vendaAux.setTotalItens(discoAux.size());
+        vendaAux.setDataVenda(new Date());
         vendaAux.setValorTotal(valorTotal);
         vendaAux.setTotalCashBack(totalCashBack);
         vendaAux.setDiscos(buildDiscoVenda(discoAux, vendaAux));
@@ -86,8 +86,7 @@ public class VendaService extends PrePersist<Venda> {
     }
 
     private List<Disco> searchDiscos(final GeneroEnum genero) {
-        List<Disco> discos = discoService.searchAll();
-        return discos.stream().filter(x -> (null != x.getGenero() && x.getGenero().equals(genero))).collect(Collectors.toList());
+        return discoService.searchAll(genero);
     }
 
     private List<DiscoVenda> buildDiscoVenda(List<Disco> discos, Venda vendaAux) {
@@ -95,7 +94,7 @@ public class VendaService extends PrePersist<Venda> {
         List<DiscoVenda> discoVendas = new ArrayList<>();
         for (Disco disco : discos) {
             discoVendas.add(
-                    DiscoVendaBuilder.newInstance().withId(randomAlphabetic(40)).withDisco(disco).withVenda(vendaAux).build()
+                    DiscoVendaBuilder.newInstance().withId(UUID.randomUUID().toString()).withDisco(disco).withVenda(vendaAux).build()
             );
         }
         return discoVendas;

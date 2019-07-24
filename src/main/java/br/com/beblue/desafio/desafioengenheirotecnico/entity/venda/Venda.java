@@ -5,6 +5,7 @@ import com.google.common.base.Objects;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,12 +13,18 @@ public class Venda extends AbsctractEntity {
 
     public static final String VENDA_ID_ATRIBUTTE_NAME = "id";
     public static final String VENDA_ID_COLNAME = "VENDA_ID";
+    private static final String DATA_VENDA_COLNAME = "VENDA_DATA";
+
     @OneToMany(mappedBy = AbstractVenda.VENDA_ATRIBUTTE_NAME, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<DiscoVenda> discos;
     @Id
     @Column(name = VENDA_ID_COLNAME)
     private String id;
     private BigDecimal valorTotal;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = DATA_VENDA_COLNAME)
+    private Date dataVenda;
 
     private BigDecimal totalCashBack;
 
@@ -67,6 +74,14 @@ public class Venda extends AbsctractEntity {
 
     public void setTotalItens(Integer totalItens) {
         this.totalItens = totalItens;
+    }
+
+    public Date getDataVenda() {
+        return dataVenda;
+    }
+
+    public void setDataVenda(Date dataVenda) {
+        this.dataVenda = dataVenda;
     }
 
     @Override
