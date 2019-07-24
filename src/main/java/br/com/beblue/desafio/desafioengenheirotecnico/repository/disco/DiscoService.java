@@ -107,7 +107,7 @@ public class DiscoService extends PrePersist<Disco> {
      * @param all    Lista de disco.
      * @return Lista de disco filtrada.
      */
-    private List<Disco> filterGenero(GeneroEnum genero, List<Disco> all) {
+    protected List<Disco> filterGenero(GeneroEnum genero, List<Disco> all) {
         if (null != all && !all.isEmpty()) {
             if (null != genero) {
                 return all.stream().filter(x -> (null != x.getGenero() && x.getGenero().equals(genero))).collect(Collectors.toList());
@@ -263,7 +263,7 @@ public class DiscoService extends PrePersist<Disco> {
      *
      * @return Número Randomico.
      */
-    private BigDecimal generateRandomValue() {
+    protected BigDecimal generateRandomValue() {
         return new BigDecimal(randomNumeric(3));
     }
 }

@@ -1,24 +1,16 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.repository.disco;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
+import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.DiscoBuilder;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
-import br.com.beblue.desafio.desafioengenheirotecnico.exception.LoadDataException;
 import br.com.beblue.desafio.desafioengenheirotecnico.helper.testes.MessageValidation;
-import br.com.beblue.desafio.desafioengenheirotecnico.repository.spotify.SpotifyService;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
-
-@RunWith(MockitoJUnitRunner.class)
-@PrepareForTest(SpotifyService.class)
 public class DiscoServiceTest extends MessageValidation {
 
     DiscoService service = new DiscoService();
@@ -115,18 +107,37 @@ public class DiscoServiceTest extends MessageValidation {
     }
 
     @Test
-    public void searchByIdPositive() throws LoadDataException {
-        DiscoRepository repositoryMock = Mockito.mock(DiscoRepository.class);
-        PowerMockito.mockStatic(SpotifyService.class);
-
-        DiscoService serviceMock = new DiscoService();
-        serviceMock = spy(serviceMock);
-        SpotifyService.needInit = false;
-
-        doReturn(new Disco()).when(repositoryMock).findById(anyString());
-        doCallRealMethod().when(serviceMock).searchById(anyString());
-
-        serviceMock.searchById("123");
-        verify(repositoryMock, times(1)).findById(eq("123"));
+    public void generateRandomValue() {
+        BigDecimal random = service.generateRandomValue();
+        Assert.assertNotNull(random);
+        Assert.assertEquals(3, random.toString().length());
     }
+
+    @Test
+    public void filterGenero() {
+        List<Disco> toFilter = buildList();
+
+        List<Disco> rock = service.filterGenero(GeneroEnum.ROCK, toFilter);
+        List<Disco> classic = service.filterGenero(GeneroEnum.CLASSIC, toFilter);
+        List<Disco> mpb = service.filterGenero(GeneroEnum.MPB, toFilter);
+        List<Disco> pop = service.filterGenero(GeneroEnum.POP, toFilter);
+    }
+
+    private List<Disco> buildList() {
+        return Arrays.asList(
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.ROCK).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.CLASSIC).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.CLASSIC).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.CLASSIC).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.MPB).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.MPB).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.POP).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.POP).build(),
+                DiscoBuilder.newInstance().withGenero(GeneroEnum.POP).build()
+        );
+    }
+
 }
