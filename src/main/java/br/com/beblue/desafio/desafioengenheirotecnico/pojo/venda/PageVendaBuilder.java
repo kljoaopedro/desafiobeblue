@@ -4,6 +4,9 @@ import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.Venda;
 
 import java.util.List;
 
+/**
+ * Objeto que ajuda na construção de um PageVenda.
+ */
 public final class PageVendaBuilder {
     private List<Venda> vendas;
     private long totalElements;

@@ -2,6 +2,9 @@ package br.com.beblue.desafio.desafioengenheirotecnico.pojo.venda;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 
+/**
+ * Objeto que ajuda na construção de um VendaMv.
+ */
 public final class VendaMvBuilder {
     private Integer quantidade;
     private GeneroEnum generoEnum;

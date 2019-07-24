@@ -43,6 +43,13 @@ public class DiscoService extends PrePersist<Disco> {
         return repository.findById(id).get();
     }
 
+    /**
+     * Busca os discos pelo seu genero, ordenando pelo nome.
+     *
+     * @param genero Genero do disco.
+     * @return Lista de Discos ordenadas de forma crescente pelo nome.
+     * @throws LoadDataException Exceção se o banco nao for carregado.
+     */
     public List<Disco> searchAll(final GeneroEnum genero) throws LoadDataException {
         if (SpotifyService.needInit) {
             throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
@@ -54,7 +61,15 @@ public class DiscoService extends PrePersist<Disco> {
         return discos;
     }
 
-
+    /**
+     * Busca os discos de forma paginada.
+     *
+     * @param generoEnum Genero do disco.
+     * @param resultados Resultados por página.
+     * @return PageDisco com as informações sobre a paginação.
+     * @throws Exception         Exception.
+     * @throws LoadDataException Exceção se o banco nao for carregado.
+     */
     public PageDisco searchAllPage(final GeneroEnum generoEnum, Integer resultados) throws Exception, LoadDataException {
         if (SpotifyService.needInit) {
             throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
@@ -85,6 +100,13 @@ public class DiscoService extends PrePersist<Disco> {
                 .build();
     }
 
+    /**
+     * Filtra o disco pelo genero.
+     *
+     * @param genero genero do disco.
+     * @param all    Lista de disco.
+     * @return Lista de disco filtrada.
+     */
     private List<Disco> filterGenero(GeneroEnum genero, List<Disco> all) {
         if (null != all && !all.isEmpty()) {
             if (null != genero) {
@@ -95,6 +117,11 @@ public class DiscoService extends PrePersist<Disco> {
         return null;
     }
 
+    /**
+     * Facilitador para construir um disco.
+     *
+     * @param discos Lista de disco.
+     */
     public void buildDisco(List<Disco> discos) {
         if (null != discos && !discos.isEmpty()) {
             discos.forEach(disco -> {
@@ -105,6 +132,12 @@ public class DiscoService extends PrePersist<Disco> {
     }
 
 
+    /**
+     * Método que persiste um Disco.
+     * Seta as informações necessárias antes de persistir.
+     *
+     * @param disco Disco a ser persistido.
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = Throwable.class)
     public void calcularCashBackDisco(final Disco disco) {
         if (null != disco) {
@@ -118,6 +151,13 @@ public class DiscoService extends PrePersist<Disco> {
         }
     }
 
+    /**
+     * Calcula a porcentagem do CashBack daquele disco de acordo com a tabela e o dia da semana.
+     *
+     * @param day    Dia da semana sendo 0 = Domingo e 6 = Sabado.
+     * @param genero Genero do Disco.
+     * @return Valor da porcentagem ja pronto para o calculo.
+     */
     protected BigDecimal calcularPorcentagem(int day, GeneroEnum genero) {
         if (null != genero) {
             switch (genero) {
@@ -218,6 +258,11 @@ public class DiscoService extends PrePersist<Disco> {
         return null;
     }
 
+    /**
+     * Gera um valor randomico para o Disco.
+     *
+     * @return Número Randomico.
+     */
     private BigDecimal generateRandomValue() {
         return new BigDecimal(randomNumeric(3));
     }

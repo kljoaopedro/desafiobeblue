@@ -10,8 +10,19 @@ import java.util.List;
  */
 public class PageVenda implements Serializable {
 
+    /**
+     * Vendas.
+     */
     private List<Venda> vendas;
+
+    /**
+     * Quantidade de vendas.
+     */
     private long totalElements;
+
+    /**
+     * Quantidade de páginas.
+     */
     private int totalPages;
 
     public PageVenda() {

@@ -10,10 +10,19 @@ import java.util.List;
  */
 public class PageDisco implements Serializable {
 
+    /**
+     * Discos.
+     */
     private List<Disco> discos;
 
+    /**
+     * Quantidade de discos.
+     */
     private long totalElements;
 
+    /**
+     * Quantidade de páginas.
+     */
     private int totalPages;
 
     public PageDisco() {

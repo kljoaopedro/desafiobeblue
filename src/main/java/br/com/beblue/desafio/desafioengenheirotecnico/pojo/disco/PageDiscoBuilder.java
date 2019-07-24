@@ -4,6 +4,9 @@ import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
 
 import java.util.List;
 
+/**
+ * Objeto que ajuda na construção de um PageDisco.
+ */
 public final class PageDiscoBuilder {
     private List<Disco> discos;
     private long totalElements;

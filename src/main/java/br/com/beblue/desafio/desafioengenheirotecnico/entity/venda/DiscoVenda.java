@@ -1,6 +1,7 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.entity.venda;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
+import br.com.beblue.desafio.desafioengenheirotecnico.helper.mapeamento.LengthColumn;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.Objects;
 
@@ -13,12 +14,11 @@ import java.io.Serializable;
 @Entity
 public class DiscoVenda extends AbstractVenda implements Serializable {
 
-
     /**
      * Identificador(PK).
      */
     @Id
-    @Column(name = "DISCO_VENDA_ID")
+    @Column(name = "DISCO_VENDA_ID", length = LengthColumn.ID)
     private String id;
 
     /**

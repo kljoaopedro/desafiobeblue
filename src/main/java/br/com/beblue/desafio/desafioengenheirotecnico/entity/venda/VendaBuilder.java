@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Objeto que ajuda na construção de uma Venda.
+ */
 public final class VendaBuilder {
     private String id;
     private List<DiscoVenda> discoVenda;

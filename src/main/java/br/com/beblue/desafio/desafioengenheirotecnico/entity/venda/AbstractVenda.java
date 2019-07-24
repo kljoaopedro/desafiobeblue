@@ -15,7 +15,9 @@ public abstract class AbstractVenda implements Serializable {
 
     public static final String VENDA_ATRIBUTTE_NAME = "venda";
 
-
+    /**
+     * Relação com Venda.
+     */
     @ManyToOne(targetEntity = Venda.class, fetch = FetchType.LAZY)
     @JoinColumn(name = Venda.VENDA_ID_COLNAME)
     private Venda venda;
