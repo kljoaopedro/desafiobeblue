@@ -2,10 +2,12 @@
  
  ###Como buildar:
  
- Navegar até a pasta raiz do projeto, exemplo: C:\dev\porvabeblue\desafio-engenheiro-tecnico>
+ 1. Clonar o projeto do GitHub.
+ 
+ 1. Navegar até a pasta raiz do projeto, exemplo: C:\dev\porvabeblue\desafio-engenheiro-tecnico>
  
  
- **Executar o comando abaixo**
+ **Executar o comando abaixo no terminal**
  
  **mvn clean package && java -jar target/desafio-engenheiro-tecnico-0.0.1-SNAPSHOT.jar**
  
