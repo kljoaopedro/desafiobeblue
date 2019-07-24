@@ -1,6 +1,7 @@
  # Desafio técnico - Engenheiro back-end Beblue
  
  ###Como buildar:
+ 
  Navegar até a pasta raiz do projeto, exemplo: C:\dev\porvabeblue\desafio-engenheiro-tecnico>
  
  
