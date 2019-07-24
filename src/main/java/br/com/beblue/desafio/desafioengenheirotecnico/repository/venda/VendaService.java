@@ -1,6 +1,7 @@
 package br.com.beblue.desafio.desafioengenheirotecnico.repository.venda;
 
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.Disco;
+import br.com.beblue.desafio.desafioengenheirotecnico.entity.disco.GeneroEnum;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.DiscoVenda;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.DiscoVendaBuilder;
 import br.com.beblue.desafio.desafioengenheirotecnico.entity.venda.Venda;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
@@ -55,13 +57,12 @@ public class VendaService extends PrePersist<Venda> {
             throw new LoadDataException("O Banco de dados não foi carregado.\n Utilizar a API : http://localhost:8080/spotify/init");
         }
 
-        List<Disco> discos = discoService.searchAll();
+        List<Disco> discosFiltrados = searchDiscos(vendaMv.getGeneroEnum());
         List<Disco> discoAux = new ArrayList<>();
 
         for (int i = 0; i < vendaMv.getQuantidade(); i++) {
-            discoAux.add(discos.get(i));
+            discoAux.add(discosFiltrados.get(i));
         }
-
 
         Venda vendaAux = new Venda();
         vendaAux.setValorTotal(BigDecimal.ZERO);
@@ -69,26 +70,24 @@ public class VendaService extends PrePersist<Venda> {
         BigDecimal valorTotal = BigDecimal.ZERO;
         BigDecimal totalCashBack = BigDecimal.ZERO;
 
-
-        vendaAux.setTotalItens(discoAux.size());
-
         for (Disco disco : discoAux) {
             valorTotal = valorTotal.add(disco.getValor());
             totalCashBack = totalCashBack.add(disco.getValorCashBack());
         }
+        vendaAux.setTotalItens(discoAux.size());
         vendaAux.setValorTotal(valorTotal);
         vendaAux.setTotalCashBack(totalCashBack);
         vendaAux.setDiscos(buildDiscoVenda(discoAux, vendaAux));
 
         prePersist(vendaAux);
-        vendaAux.setId(randomAlphabetic(40));
-        vendaAux.getDiscos().forEach(x -> {
-            x.setId(randomAlphabetic(40));
-            x.setVenda(vendaAux);
-        });
         repository.save(vendaAux);
 
         return vendaAux;
+    }
+
+    private List<Disco> searchDiscos(final GeneroEnum genero) {
+        List<Disco> discos = discoService.searchAll();
+        return discos.stream().filter(x -> (null != x.getGenero() && x.getGenero().equals(genero))).collect(Collectors.toList());
     }
 
     private List<DiscoVenda> buildDiscoVenda(List<Disco> discos, Venda vendaAux) {
