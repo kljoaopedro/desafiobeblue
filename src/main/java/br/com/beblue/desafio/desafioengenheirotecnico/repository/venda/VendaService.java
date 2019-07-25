@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
+
 @Service
 public class VendaService extends PrePersist<Venda> {
 
@@ -107,9 +109,23 @@ public class VendaService extends PrePersist<Venda> {
      * @return
      */
     private List<Venda> filterData(List<Venda> listAux, Date dataInicial, Date dataFinal) {
-        return listAux.stream().filter(
-                x -> (x != null && (x.getDataVenda().after(dataInicial) && x.getDataVenda().before(dataFinal)))
-        ).collect(Collectors.toList());
+        if (null != listAux && !listAux.isEmpty()) {
+            if (null != dataFinal && null != dataFinal) {
+                return listAux.stream().filter(
+                        x -> (x != null && (x.getDataVenda().after(dataInicial) && x.getDataVenda().before(dataFinal))))
+                        .collect(Collectors.toList());
+            }
+            if (null != dataInicial) {
+                return listAux.stream().filter(
+                        x -> (x != null && (x.getDataVenda().after(dataInicial)))).collect(Collectors.toList());
+            }
+            if (null != dataFinal) {
+                return listAux.stream().filter(
+                        x -> (x != null && (x.getDataVenda().before(dataFinal)))).collect(Collectors.toList());
+            }
+
+        }
+        return null;
     }
 
     /**
@@ -133,7 +149,10 @@ public class VendaService extends PrePersist<Venda> {
         List<Disco> discoAux = new ArrayList<>();
 
         for (int i = 0; i < vendaMv.getQuantidade(); i++) {
-            discoAux.add(discosFiltrados.get(i));
+            int randomNumeric = getRandomNumeric();
+            if (randomNumeric >= 0 && randomNumeric <= 49) {
+                discoAux.add(discosFiltrados.get(randomNumeric));
+            }
         }
 
         Venda vendaAux = new Venda();
@@ -156,6 +175,14 @@ public class VendaService extends PrePersist<Venda> {
         repository.save(vendaAux);
 
         return vendaAux;
+    }
+
+    protected int getRandomNumeric() {
+        int randomNumeric = Integer.parseInt(randomNumeric(2));
+        if (randomNumeric < 0 || randomNumeric > 49) {
+            randomNumeric = getRandomNumeric();
+        }
+        return randomNumeric;
     }
 
     /**

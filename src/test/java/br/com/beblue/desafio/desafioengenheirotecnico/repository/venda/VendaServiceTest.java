@@ -57,4 +57,13 @@ public class VendaServiceTest extends TesteHelper {
         });
     }
 
+    @Test
+    public void getRandom() {
+        for (int i = 0; i < 10; i++) {
+            int randomNumeric = service.getRandomNumeric();
+            Assert.assertTrue(randomNumeric >= 0);
+            Assert.assertTrue(randomNumeric <= 49);
+        }
+
+    }
 }
