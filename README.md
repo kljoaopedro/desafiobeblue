@@ -1,6 +1,6 @@
  # Desafio técnico - Engenheiro back-end Beblue
  
- ###Como buildar:
+ ### Como buildar:
  
  1. Clonar o projeto do GitHub.
  
