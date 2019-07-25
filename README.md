@@ -56,6 +56,6 @@ Onde quantidade deve ser inteiro e o Genero deve ser escrito totalmente em Maius
 
 
 @Get
-**Busca Paginada/SearchAll** : http://localhost:8080/vendas/?resultado=25&data-inicial=2019-07-23&data-final=2019-07-25
+**Busca Paginada/SearchAll** : http://localhost:8080/vendas/?resultado=25&data-inicial=2019-07-23&data-final=2019-08-30
 
 **Paramentros**: resultado tem que ser inteiro, datas no formato YYYY-MM-DD
